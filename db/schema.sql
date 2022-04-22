@@ -1,4 +1,5 @@
 /* important that we drop the files in the correct order in this case since candidates uses parties id you have to drop candidates first*/
+DROP TABLE IF EXISTS votes;
 DROP TABLE IF EXISTS candidates;
 DROP TABLE IF EXISTS parties;
 DROP TABLE IF EXISTS voters;
@@ -26,3 +27,13 @@ CREATE TABLE voters (
     email VARCHAR(50) NOT NULL,
     create_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE votes (
+  id INTEGER AUTO_INCREMENT PRIMARY KEY, 
+  voter_id INTEGER NOT NULL,
+  candidate_id INTEGER NOT NULL,
+  create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT uc_voter UNIQUE (voter_id),
+  CONSTRAINT fk_voter FOREIGN KEY (voter_id) REFERENCES voters(id) ON DELETE CASCADE,
+  CONSTRAINT fk_candidate FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE
+)
